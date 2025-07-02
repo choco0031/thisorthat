@@ -1,0 +1,10 @@
+Apple, Banana
+Pizza, Burger
+Coffee, Tea
+Beach, Mountains
+Summer, Winter
+Cats, Dogs
+Morning person, Night owl
+Sweet, Savory
+Book, Movie
+City, Countryside
