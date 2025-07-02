@@ -25,6 +25,6 @@ A real-time multiplayer game built with **Node.js**, **Socket.IO**, and **Vanill
 - Automatic score tracking
 - Beautifully animated game interface
 
-## 📁 Folder Structure
+
 
 
