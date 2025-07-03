@@ -387,15 +387,40 @@
 
         .option-btn.option1 {
             background: linear-gradient(45deg, #e91e63, #f06292);
+            color: white;
         }
 
         .option-btn.option2 {
             background: linear-gradient(45deg, #3f51b5, #7986cb);
+            color: white;
         }
 
         .option-btn:hover {
             transform: scale(1.05);
             border-color: #fff;
+        }
+
+        .option-btn.selected {
+            transform: scale(1.1);
+            border: 3px solid #ffc107;
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.6), 0 8px 25px rgba(0,0,0,0.3);
+            animation: selectedPulse 0.5s ease;
+        }
+
+        .option-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .option-btn.selected:disabled {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        @keyframes selectedPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1.1); }
         }
 
         .your-vote {
@@ -813,7 +838,6 @@
                     Option 2
                 </button>
             </div>
-            <div id="yourVote" class="your-vote hidden"></div>
         </div>
 
         <!-- Vote Results -->
@@ -1309,8 +1333,6 @@
             sections.forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
-            
-            document.getElementById('yourVote').classList.add('hidden');
         }
 
         function showDiscussionPhase(data) {
@@ -1384,15 +1406,21 @@
         }
 
         function showYourVote(vote) {
-            const voteDisplay = document.getElementById('yourVote');
-            const votedOption = vote === 'option1' ? gameState.currentTopic.option1 : gameState.currentTopic.option2;
-            voteDisplay.innerHTML = `Your vote: <strong>${votedOption}</strong>`;
-            voteDisplay.classList.remove('hidden');
+            // Add selected class to the voted button
+            if (vote === 'option1') {
+                document.getElementById('option1Btn').classList.add('selected');
+                document.getElementById('option2Btn').classList.remove('selected');
+            } else {
+                document.getElementById('option2Btn').classList.add('selected');
+                document.getElementById('option1Btn').classList.remove('selected');
+            }
         }
 
         function enableVoteButtons() {
             document.getElementById('option1Btn').disabled = false;
             document.getElementById('option2Btn').disabled = false;
+            document.getElementById('option1Btn').classList.remove('selected');
+            document.getElementById('option2Btn').classList.remove('selected');
         }
 
         function disableVoteButtons() {
