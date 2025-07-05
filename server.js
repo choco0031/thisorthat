@@ -210,12 +210,12 @@ io.on('connection', (socket) => {
             const gameState = {
                 phase: 'discussion',
                 roundNumber: 1,
-                totalRounds: 15,
+                totalRounds: 20,
                 currentTopic: null,
                 votes: {},
                 scores: {},
                 usedTopics: [],
-                timer: 60,
+                timer: 90,
                 timerInterval: null,
                 voteResults: { option1: 0, option2: 0 }
             };
@@ -273,7 +273,7 @@ io.on('connection', (socket) => {
             gameState.currentTopic = null;
             gameState.votes = {};
             gameState.usedTopics = [];
-            gameState.timer = 60;
+            gameState.timer = 90;
             gameState.voteResults = { option1: 0, option2: 0 };
             
             lobby.participants.forEach(participant => {
@@ -373,7 +373,7 @@ function startDiscussionPhase(code) {
     gameState.usedTopics.push(originalIndex);
     gameState.phase = 'discussion';
     gameState.votes = {};
-    gameState.timer = 60;
+    gameState.timer = 90;
     
     if (gameState.timerInterval) {
         clearInterval(gameState.timerInterval);
@@ -385,7 +385,7 @@ function startDiscussionPhase(code) {
         roundNumber: gameState.roundNumber
     });
     
-    startTimer(code, 60, () => {
+    startTimer(code, 90, () => {
         startVotingPhase(code);
     });
 }
