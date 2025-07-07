@@ -210,7 +210,7 @@ io.on('connection', (socket) => {
             const gameState = {
                 phase: 'discussion',
                 roundNumber: 1,
-                totalRounds: 20,
+                totalRounds: 25,
                 currentTopic: null,
                 votes: {},
                 scores: {},
