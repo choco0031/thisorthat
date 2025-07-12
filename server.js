@@ -243,13 +243,22 @@ io.on('connection', (socket) => {
             gameState.votes[username] = vote;
             
             const lobby = lobbies.get(code);
-            const connectedPlayers = lobby.participants.filter(p => p.connected);
+            const connectedPlayers = lobby.participants.filter(p => p.connected !== false);
             const votedPlayers = Object.keys(gameState.votes);
             
-            if (votedPlayers.length >= connectedPlayers.length) {
+            // Check if all connected players have voted
+            const allPlayersVoted = connectedPlayers.every(player => 
+                gameState.votes.hasOwnProperty(player.username)
+            );
+            
+            if (allPlayersVoted) {
+                // Clear the timer immediately when everyone has voted
                 if (gameState.timerInterval) {
                     clearInterval(gameState.timerInterval);
+                    gameState.timerInterval = null;
                 }
+                
+                // Proceed to results immediately (with a small delay for UX)
                 setTimeout(() => {
                     calculateResults(code);
                 }, 1000);
