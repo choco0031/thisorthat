@@ -244,7 +244,6 @@ io.on('connection', (socket) => {
             
             const lobby = lobbies.get(code);
             const connectedPlayers = lobby.participants.filter(p => p.connected !== false);
-            const votedPlayers = Object.keys(gameState.votes);
             
             // Check if all connected players have voted
             const allPlayersVoted = connectedPlayers.every(player => 
@@ -252,16 +251,23 @@ io.on('connection', (socket) => {
             );
             
             if (allPlayersVoted) {
-                // Clear the timer immediately when everyone has voted
-                if (gameState.timerInterval) {
-                    clearInterval(gameState.timerInterval);
-                    gameState.timerInterval = null;
-                }
+                // Only skip early if at least 15 seconds have passed (giving players with slow connections time)
+                const timeElapsed = 30 - gameState.timer;
+                const minimumVotingTime = 15; // Minimum seconds before allowing early skip
                 
-                // Proceed to results immediately (with a small delay for UX)
-                setTimeout(() => {
-                    calculateResults(code);
-                }, 1000);
+                if (timeElapsed >= minimumVotingTime) {
+                    // Clear the timer and proceed to results
+                    if (gameState.timerInterval) {
+                        clearInterval(gameState.timerInterval);
+                        gameState.timerInterval = null;
+                    }
+                    
+                    setTimeout(() => {
+                        calculateResults(code);
+                    }, 1000);
+                }
+                // If not enough time has passed, let the timer continue naturally
+                // This ensures players with slower connections get adequate time
             }
         }
     });
